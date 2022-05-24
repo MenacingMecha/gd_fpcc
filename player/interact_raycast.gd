@@ -3,7 +3,7 @@ extends RayCast
 signal interacted
 signal interactable_hovered_changed(new_hovered)
 
-const InteractBox := preload("res://interact_box.gd")
+const InteractBox := preload("interact_box.gd")
 
 export var _interact_input_action := "interact"
 
