@@ -42,7 +42,7 @@ func _physics_process(delta: float):
 	dir += -cam_xform.basis.z * self._input_move_vector.y
 	dir += cam_xform.basis.x * self._input_move_vector.x
 
-	var camera_direction := InputDirection.get_input_direction(InputDirection.DirectionTypes.LOOK, false)
+	var camera_direction := InputDirection.get_input_direction(InputDirection.DirectionTypes.LOOK)
 	var camera_rotation := camera_direction  # * float(UserSettings.get_value("input", "analogue_look_sensitivity"))  # TODO: move to project settings
 
 	if camera_rotation != Vector2.ZERO:

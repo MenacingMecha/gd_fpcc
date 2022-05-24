@@ -23,22 +23,21 @@ const MIN_DEADZONE := 0.1  # TODO: is this needed? seems duplicated
 
 # Returns the direction for a given `DirectionTypes` axis.
 # Use `get_movement_direction()` instead for getting a direction for walking.
-static func get_input_direction(direction_type: int, use_min_deadzone: bool) -> Vector2:
+static func get_input_direction(direction_type: int) -> Vector2:
 	var format_values: Array = DIRECTION_FORMAT_VALUES_MAP[direction_type]
 	# TODO: change this not to use Input singleton, as it's a lot harder to test
 	return Input.get_vector(
 		LEFT_DIRECTION_FORMAT_BASE % format_values,
 		RIGHT_DIRECTION_FORMAT_BASE % format_values,
 		UP_DIRECTION_FORMAT_BASE % format_values,
-		DOWN_DIRECTION_FORMAT_BASE % format_values,
-		MIN_DEADZONE if use_min_deadzone else -1.0
+		DOWN_DIRECTION_FORMAT_BASE % format_values
 	)
 
 
 # Returns the input axis for movement
 # Appends keyboard axis seperately (see: https://github.com/godotengine/godot/issues/45628)
 static func get_movement_direction() -> Vector2:
-	var keyboard_direction := get_input_direction(DirectionTypes.KEYBOARD, false)
-	var pad_direction := get_input_direction(DirectionTypes.MOVE, false)
+	var keyboard_direction := get_input_direction(DirectionTypes.KEYBOARD)
+	var pad_direction := get_input_direction(DirectionTypes.MOVE)
 	var accumalated_direction := (pad_direction + keyboard_direction).normalized()
 	return accumalated_direction * REVERSE_MOVEMENT_DIRECTION_MULTIPLIER
