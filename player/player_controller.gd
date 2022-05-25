@@ -31,7 +31,7 @@ func _ready():
 
 func _unhandled_input(event: InputEvent):
 	if self.can_capture_mouse_motion and event is InputEventMouseMotion:
-		_turn_camera(-(event as InputEventMouseMotion).relative)
+		_turn_camera(-(event as InputEventMouseMotion).relative * self.mouse_look_sensitivity)
 
 
 func _physics_process(delta: float):
@@ -63,6 +63,10 @@ func get_rotation_helper_x_rotation() -> float:
 	return self._rotation_helper.rotation_degrees.x
 
 
+func get_input_direction() -> InputDirection:
+	return self._input_direction
+
+
 # Calculates and applies velocity to physics body based on input, returning the new velocity.
 # TODO: "calculates AND applies" - the calculating can be made fully static, move the applying elsewhere
 func _process_velocity(delta: float, velocity: Vector3, input_direction: Vector3) -> Vector3:
@@ -89,11 +93,9 @@ static func _get_walk_direction(camera_transform: Transform, input_direction: Ve
 # X rotation is clamped by `MAX_CAMERA_X_DEGREE`.
 func _turn_camera(amount: Vector2):
 	self._rotation_helper.rotation_degrees.x = clamp(
-		self._rotation_helper.rotation_degrees.x + (amount.y * self.mouse_look_sensitivity),
-		-MAX_CAMERA_X_DEGREE,
-		MAX_CAMERA_X_DEGREE
+		self._rotation_helper.rotation_degrees.x + amount.y, -MAX_CAMERA_X_DEGREE, MAX_CAMERA_X_DEGREE
 	)
-	var y_turn := deg2rad(amount.x * self.mouse_look_sensitivity)
+	var y_turn := deg2rad(amount.x)
 	self.rotate_y(y_turn)
 	self._turn_amount = -y_turn
 	self._camera_turned_this_update = true

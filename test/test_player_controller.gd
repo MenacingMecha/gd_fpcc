@@ -46,9 +46,21 @@ func test_cant_look_vertically_past_max(params = use_parameters([Vector2.UP, Vec
 		player_controller.MAX_CAMERA_X_DEGREE
 	)
 
-# func test_can_turn_horizontally_with_joypad():
 
-# func test_can_turn_vertically_with_joypad():
+func test_can_turn_horizontally_with_joypad(params = use_parameters([Vector2.LEFT, Vector2.RIGHT])):
+	var player_controller: PlayerController = add_child_autofree(PLAYER_CONTROLLER_SCENE.instance())
+	var expected_y_rotation: float = -params.x * player_controller.joy_look_sensitivity
+	player_controller.get_input_direction().get_axis_look_joy().fake_direction = params
+	simulate(player_controller, 1, 1)
+	assert_almost_eq(player_controller.rotation_degrees.y, expected_y_rotation, FLOAT_ERROR_MARGIN)
+
+
+func test_can_turn_vertically_with_joypad(params = use_parameters([Vector2.UP, Vector2.DOWN])):
+	var player_controller: PlayerController = add_child_autofree(PLAYER_CONTROLLER_SCENE.instance())
+	player_controller.get_input_direction().get_axis_look_joy().fake_direction = params
+	simulate(player_controller, 1, 1)
+	var expected_x_rotation: float = -params.y * player_controller.joy_look_sensitivity
+	assert_almost_eq(player_controller.get_rotation_helper_x_rotation(), expected_x_rotation, FLOAT_ERROR_MARGIN)
 
 # func test_can_walk():
 

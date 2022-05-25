@@ -14,3 +14,7 @@ func get_look_direction() -> Vector2:
 
 func get_move_direction() -> Vector2:
 	return (self._axis_move_key.get_raw_direction() + self._axis_move_joy.get_raw_direction()).normalized()
+
+
+func get_axis_look_joy() -> InputAxis:
+	return _axis_look_joy
