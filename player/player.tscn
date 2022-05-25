@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://player/player.gd" type="Script" id=1]
+[ext_resource path="res://player/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://player/mouse_grabber.gd" type="Script" id=2]
 [ext_resource path="res://player/input_direction.tscn" type="PackedScene" id=3]
 [ext_resource path="res://player/camera_viewbob.gd" type="Script" id=9]
