@@ -3,6 +3,7 @@ extends KinematicBody
 
 const CameraViewbob := preload("camera_viewbob.gd")
 const InputDirection := preload("input_direction.gd")
+const MouseGrabber := preload("mouse_grabber.gd")
 
 const GRAVITY := -24.8  # TODO: change to a private onready that grabs from project settings
 const MAX_SPEED := 10
@@ -17,14 +18,19 @@ var _velocity := Vector3.ZERO
 var _turn_amount := 0.0  # TODO: This is re-initialized every tick - delete if possible
 var _camera_turned_this_update := false  # TODO: can we eliminate this state?
 
+onready var can_capture_mouse_motion := ($MouseGrabber as MouseGrabber).is_mouse_grabbed setget set_can_capture_mouse_motion
 onready var _camera := $RotationHelper/Camera as Camera
 onready var _camera_viewbob := $RotationHelper/Camera as CameraViewbob
 onready var _rotation_helper := $RotationHelper as Spatial
 onready var _input_direction := $InputDirection as InputDirection
 
 
+func _ready():
+	($MouseGrabber as MouseGrabber).connect("mouse_grabbed", self, "set_can_capture_mouse_motion")
+
+
 func _unhandled_input(event: InputEvent):
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if self.can_capture_mouse_motion and event is InputEventMouseMotion:
 		_turn_camera(-(event as InputEventMouseMotion).relative)
 
 
@@ -47,6 +53,14 @@ func _physics_process(delta: float):
 	if !_camera_turned_this_update:
 		_turn_amount = 0
 	_camera_turned_this_update = false
+
+
+func set_can_capture_mouse_motion(new_state: bool):
+	can_capture_mouse_motion = new_state
+
+
+func get_rotation_helper_x_rotation() -> float:
+	return self._rotation_helper.rotation_degrees.x
 
 
 # Calculates and applies velocity to physics body based on input, returning the new velocity.
