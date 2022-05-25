@@ -51,3 +51,24 @@ func test_releasing_input_direction(
 	input_sender.action_up(params[0], 0)
 	input_sender.action_up(params[1], 0)
 	assert_eq(input_axis.get_raw_direction(), Vector2.ZERO)
+
+
+func test_can_fake_get_raw_direction():
+	var input_axis: InputAxis = add_child_autofree(InputAxis.new())
+	var direction := Vector2(1, 1)
+	input_axis.fake_direction = direction
+	assert_eq(input_axis.get_raw_direction(), direction)
+
+
+func test_fake_direction_cannot_exceed_real_direction():
+	var input_axis: InputAxis = add_child_autofree(InputAxis.new())
+	var direction := Vector2(2, 2)
+	input_axis.fake_direction = direction
+	assert_eq(input_axis.get_raw_direction(), Vector2(1, 1))
+
+
+func test_can_null_fake_direction_after_setting():
+	var input_axis: InputAxis = add_child_autofree(InputAxis.new())
+	input_axis.fake_direction = Vector2.RIGHT
+	input_axis.fake_direction = null
+	assert_null(input_axis.fake_direction)
