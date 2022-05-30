@@ -8,8 +8,10 @@ const MouseGrabber := preload("mouse_grabber.gd")
 const MAX_SPEED := 10
 const MOVE_ACCEL := 4.5
 const MOVE_DEACCEL := 16.0  # TODO: Rename or give description here
-const MAX_SLOPE_ANGLE := 40
+const MAX_SLOPE_ANGLE := deg2rad(40.0)
 const MAX_CAMERA_X_DEGREE := 70.0
+const FLOOR_SNAP_LENGTH := .2
+const MIN_FLOOR_Y_VELOCITY := -0.5
 
 var mouse_look_sensitivity := 0.1
 var joy_look_sensitivity := 20.0
@@ -41,9 +43,14 @@ func _physics_process(delta: float):
 	if camera_rotation != Vector2.ZERO:
 		_turn_camera(camera_rotation)
 
+	var previous_velocity := self.velocity
 	self.velocity = _process_velocity(
 		delta, self.velocity, _get_walk_direction(self._camera.get_global_transform(), input_move_vector)
 	)
+
+	# Don't shoot up ramps
+	if self.velocity.y > 0 and self.velocity.y > previous_velocity.y:
+		self.velocity.y = max(0, previous_velocity.y)
 
 	var is_walking := input_move_vector.length_squared() > 0
 
@@ -79,9 +86,31 @@ func _process_velocity(delta: float, velocity: Vector3, input_direction: Vector3
 
 	var target = input_direction * MAX_SPEED
 	h_vel = h_vel.linear_interpolate(target, accel * delta)
+
+	# Reduce sliding up/down ramps when walking
+	# https://github.com/godotengine/godot/issues/34117
+	if !input_direction.dot(h_vel) > 0:
+		if h_vel.x < 1 && h_vel.x > -1:
+			h_vel.x = 0
+		if h_vel.z < 1 && h_vel.z > -1:
+			h_vel.z = 0
+
+	var is_on_floor := is_on_floor()
+
+	if is_on_floor and velocity.y < MIN_FLOOR_Y_VELOCITY:
+		velocity.y = MIN_FLOOR_Y_VELOCITY
+
 	velocity.x = h_vel.x
 	velocity.z = h_vel.z
-	return move_and_slide(velocity, Vector3.UP, 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
+
+	return move_and_slide_with_snap(
+		velocity,
+		-get_floor_normal() * FLOOR_SNAP_LENGTH if is_on_floor else Vector3.ZERO,
+		Vector3.UP,
+		true,
+		1,
+		MAX_SLOPE_ANGLE
+	)
 
 
 # Basis vectors are already normalized.

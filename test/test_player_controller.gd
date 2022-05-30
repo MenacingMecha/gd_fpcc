@@ -117,6 +117,105 @@ func test_looking_up_or_down_doesnt_decrease_speed(params = use_parameters([Vect
 
 	assert_almost_eq(distance_when_looking_straight, distance_when_looking_not_straight, FLOAT_ERROR_MARGIN)
 
-# func test_can_walk_up_slopes():
 
-# func test_doesnt_slide_down_slopes():
+func test_can_walk_up_slopes():
+	# WITH a test map
+	# AND a PlayerController positioned at a walkable ramp
+	var test_map := add_child_autofree(TEST_MAP.instance()) as Spatial
+	var player_controller := test_map.get_node("Player") as PlayerController
+	var pre_ramp_transform := test_map.get_node("RampPositionPre1").transform as Transform
+	player_controller.transform = pre_ramp_transform
+
+	# WHEN the player walks forward for half a second
+	player_controller.get_input_direction().get_axis_move_joy().fake_direction = Vector2.UP
+	simulate(player_controller, 1, 0.5)
+
+	# THEN we should have walked up the ramp
+	var expected_move_distance := 1
+	var expected_x_position := abs(pre_ramp_transform.origin.x) + expected_move_distance
+	var expected_deviance := 0.5
+	assert_between(
+		abs(player_controller.translation.x),
+		expected_x_position - expected_deviance,
+		expected_x_position + expected_deviance
+	)
+
+
+func test_doesnt_slide_down_walkable_slopes():
+	# WITH a test map
+	# AND a PlayerController positioned on a walkable ramp
+	var test_map := add_child_autofree(TEST_MAP.instance()) as Spatial
+	var player_controller := test_map.get_node("Player") as PlayerController
+	var ramp_position_transform := test_map.get_node("RampPositionOn1").transform as Transform
+	player_controller.transform = ramp_position_transform
+
+	# WHEN 10 seconds have passed
+	simulate(player_controller, 1, 10.0)
+
+	# THEN our x translation shouldn't have changed
+	var x_position := player_controller.translation.x
+	var expected_x_position := ramp_position_transform.origin.x
+	assert_eq(x_position, expected_x_position)
+
+
+func test_does_slide_down_unwalkable_slopes():
+	# WITH a test map
+	# AND a PlayerController positioned on an unwalkable ramp
+	var test_map := add_child_autofree(TEST_MAP.instance()) as Spatial
+	var player_controller := test_map.get_node("Player") as PlayerController
+	var ramp_position_transform := test_map.get_node("RampPositionOn2").transform as Transform
+	player_controller.transform = ramp_position_transform
+
+	# WHEN 10 seconds have passed
+	simulate(player_controller, 1, 10.0)
+
+	# THEN our x translation should have changed
+	var x_position := player_controller.translation.x
+	var expected_x_position := ramp_position_transform.origin.x
+	assert_ne(x_position, expected_x_position)
+
+
+func test_player_cant_walk_up_slopes_that_are_too_steep():
+	# WITH a test map
+	# AND a PlayerController positioned at a walkable ramp
+	var test_map := add_child_autofree(TEST_MAP.instance()) as Spatial
+	var player_controller := test_map.get_node("Player") as PlayerController
+	var pre_ramp_transform := test_map.get_node("RampPositionPre2").transform as Transform
+	player_controller.transform = pre_ramp_transform
+
+	# WHEN the player walks forward for five seconds
+	player_controller.get_input_direction().get_axis_move_joy().fake_direction = Vector2.UP
+	simulate(player_controller, 5, 1.0)
+
+	# THEN we shouldn't have walked up the ramp
+	var expected_move_distance := 0
+	var expected_x_position := abs(pre_ramp_transform.origin.x) + expected_move_distance
+	var expected_deviance := 1.0
+	assert_between(
+		abs(player_controller.translation.x),
+		expected_x_position - expected_deviance,
+		expected_x_position + expected_deviance
+	)
+
+
+func test_player_doesnt_jump_up_unwalkable_slopes():
+	# WITH a test map
+	# AND a PlayerController positioned at a walkable ramp
+	var test_map := add_child_autofree(TEST_MAP.instance()) as Spatial
+	var player_controller := test_map.get_node("Player") as PlayerController
+	var pre_ramp_transform := test_map.get_node("RampPositionPre1").transform as Transform
+	player_controller.transform = pre_ramp_transform
+
+	# WHEN the player walks forward for half a second
+	player_controller.get_input_direction().get_axis_move_joy().fake_direction = Vector2.UP
+	simulate(player_controller, 1, 0.5)
+
+	# THEN we should have walked up the ramp
+	var expected_move_distance := 1
+	var expected_x_position := abs(pre_ramp_transform.origin.x) + expected_move_distance
+	var expected_deviance := 0.5
+	assert_between(
+		abs(player_controller.translation.x),
+		expected_x_position - expected_deviance,
+		expected_x_position + expected_deviance
+	)

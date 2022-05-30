@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://player/player.tscn" type="PackedScene" id=1]
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 1, 10, 3 )
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 5, 1.5 )
 
 [node name="Spatial" type="Spatial"]
 
@@ -8,34 +14,112 @@
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+calculate_tangents = false
 use_collision = true
 width = 10.0
 depth = 10.0
 
+[node name="CSGBox2" type="CSGBox" parent="CSGBox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 3.1, -3.95 )
+calculate_tangents = false
+use_collision = true
+width = 1.0
+height = 4.0
+depth = 1.0
+
+[node name="CSGBox3" type="CSGBox" parent="CSGBox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 3.1, -3.95 )
+calculate_tangents = false
+use_collision = true
+width = 1.0
+height = 4.0
+depth = 1.0
+
+[node name="CSGBox4" type="CSGBox" parent="CSGBox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 3.1, 3.95 )
+calculate_tangents = false
+use_collision = true
+width = 1.0
+height = 4.0
+depth = 1.0
+
+[node name="CSGBox5" type="CSGBox" parent="CSGBox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 3.1, 3.95 )
+calculate_tangents = false
+use_collision = true
+width = 1.0
+height = 4.0
+depth = 1.0
+
 [node name="CSGBox2" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 2, -3.95 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10 )
+calculate_tangents = false
+use_collision = true
+width = 10.0
+depth = 10.0
+
+[node name="CSGBox2" type="CSGBox" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 3.1, -3.95 )
+calculate_tangents = false
 use_collision = true
 width = 1.0
 height = 4.0
 depth = 1.0
 
-[node name="CSGBox3" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 2, -3.95 )
+[node name="CSGBox3" type="CSGBox" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 3.1, -3.95 )
+calculate_tangents = false
 use_collision = true
 width = 1.0
 height = 4.0
 depth = 1.0
 
-[node name="CSGBox4" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 2, 3.95 )
+[node name="CSGBox4" type="CSGBox" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.95, 3.1, 3.95 )
+calculate_tangents = false
 use_collision = true
 width = 1.0
 height = 4.0
 depth = 1.0
 
-[node name="CSGBox5" type="CSGBox" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 2, 3.95 )
+[node name="Ramp1" type="MeshInstance" parent="CSGBox2"]
+transform = Transform( 0.5, -0.866025, 0, 0.866025, 0.5, 0, 0, 0, 1, -3.95, 1.45348, -0.277801 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="CSGBox2/Ramp1"]
+
+[node name="CollisionShape" type="CollisionShape" parent="CSGBox2/Ramp1/StaticBody"]
+transform = Transform( 1, -3.3094e-15, 0, -3.3094e-15, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="Ramp2" type="MeshInstance" parent="CSGBox2"]
+transform = Transform( -0.866025, 0.5, 8.74228e-08, 0.5, 0.866025, 0, -7.57103e-08, 4.37114e-08, -1, 3.95, 1.453, -0.278 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="CSGBox2/Ramp2"]
+
+[node name="CollisionShape" type="CollisionShape" parent="CSGBox2/Ramp2/StaticBody"]
+transform = Transform( 1, -3.3094e-15, 0, -3.3094e-15, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="CSGBox5" type="CSGBox" parent="CSGBox2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95, 3.1, 3.95 )
+calculate_tangents = false
 use_collision = true
 width = 1.0
 height = 4.0
 depth = 1.0
+
+[node name="RampPositionOn1" type="Position3D" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.79951, 3.0069, -10.1565 )
+
+[node name="RampPositionPre1" type="Position3D" parent="."]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.45394, 0.18696, -10.1565 )
+
+[node name="RampPositionPre2" type="Position3D" parent="."]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2.73832, 0.187, -10.157 )
+
+[node name="RampPositionOn2" type="Position3D" parent="."]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.31318, 4.27351, -10.157 )
