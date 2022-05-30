@@ -17,4 +17,8 @@ func get_move_direction() -> Vector2:
 
 
 func get_axis_look_joy() -> InputAxis:
-	return _axis_look_joy
+	return self._axis_look_joy
+
+
+func get_axis_move_joy() -> InputAxis:
+	return self._axis_move_joy

@@ -5,7 +5,6 @@ const CameraViewbob := preload("camera_viewbob.gd")
 const InputDirection := preload("input_direction.gd")
 const MouseGrabber := preload("mouse_grabber.gd")
 
-const GRAVITY := -24.8  # TODO: change to a private onready that grabs from project settings
 const MAX_SPEED := 10
 const MOVE_ACCEL := 4.5
 const MOVE_DEACCEL := 16.0  # TODO: Rename or give description here
@@ -14,11 +13,12 @@ const MAX_CAMERA_X_DEGREE := 70.0
 
 var mouse_look_sensitivity := 0.1
 var joy_look_sensitivity := 20.0
-var _velocity := Vector3.ZERO
+var velocity := Vector3.ZERO
 var _turn_amount := 0.0  # TODO: This is re-initialized every tick - delete if possible
 var _camera_turned_this_update := false  # TODO: can we eliminate this state?
 
 onready var can_capture_mouse_motion := ($MouseGrabber as MouseGrabber).is_mouse_grabbed setget set_can_capture_mouse_motion
+onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 onready var _camera := $RotationHelper/Camera as Camera
 onready var _camera_viewbob := $RotationHelper/Camera as CameraViewbob
 onready var _rotation_helper := $RotationHelper as Spatial
@@ -41,8 +41,8 @@ func _physics_process(delta: float):
 	if camera_rotation != Vector2.ZERO:
 		_turn_camera(camera_rotation)
 
-	self._velocity = _process_velocity(
-		delta, self._velocity, _get_walk_direction(self._camera.get_global_transform(), input_move_vector)
+	self.velocity = _process_velocity(
+		delta, self.velocity, _get_walk_direction(self._camera.get_global_transform(), input_move_vector)
 	)
 
 	var is_walking := input_move_vector.length_squared() > 0
@@ -71,7 +71,7 @@ func get_input_direction() -> InputDirection:
 # TODO: "calculates AND applies" - the calculating can be made fully static, move the applying elsewhere
 func _process_velocity(delta: float, velocity: Vector3, input_direction: Vector3) -> Vector3:
 	input_direction.y = 0
-	velocity.y += delta * GRAVITY
+	velocity.y -= delta * self.gravity
 	var h_vel := Vector3(velocity.x, 0, velocity.z)
 
 	input_direction = input_direction.normalized()
