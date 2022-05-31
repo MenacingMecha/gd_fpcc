@@ -37,3 +37,7 @@ func _physics_process(_delta: float):
 
 	# Update at end of tick
 	self._previously_hovered_interactable = hovered_interactable
+
+
+func get_interact_input_action() -> String:
+	return self._interact_input_action

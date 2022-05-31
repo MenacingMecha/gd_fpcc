@@ -3,8 +3,8 @@
 [ext_resource path="res://player/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://player/mouse_grabber.gd" type="Script" id=2]
 [ext_resource path="res://player/input_direction.tscn" type="PackedScene" id=3]
+[ext_resource path="res://player/interact_raycast.tscn" type="PackedScene" id=4]
 [ext_resource path="res://player/camera_viewbob.gd" type="Script" id=9]
-[ext_resource path="res://player/interact_raycast.gd" type="Script" id=17]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.7
@@ -26,16 +26,7 @@ current = true
 fov = 90.0
 script = ExtResource( 9 )
 
-[node name="InteractRaycast" type="RayCast" parent="RotationHelper"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
-enabled = true
-cast_to = Vector3( 0, 0, -1 )
-collision_mask = 2
-collide_with_areas = true
-collide_with_bodies = false
-debug_shape_custom_color = Color( 1, 1, 1, 0.196078 )
-debug_shape_thickness = 5
-script = ExtResource( 17 )
+[node name="InteractRaycast" parent="RotationHelper" instance=ExtResource( 4 )]
 
 [node name="MouseGrabber" type="Node" parent="."]
 script = ExtResource( 2 )

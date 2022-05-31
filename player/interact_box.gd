@@ -2,7 +2,7 @@ extends Area
 
 signal interacted_with
 
-const COLLISION_LAYER_BIT := 0b10
+const COLLISION_LAYER_BIT := 0b10  # TODO: this should be editable
 
 export var is_active := true setget set_is_active
 export var _one_shot := false
