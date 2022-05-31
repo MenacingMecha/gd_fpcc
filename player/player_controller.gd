@@ -14,7 +14,7 @@ const FLOOR_SNAP_LENGTH := .2
 const MIN_FLOOR_Y_VELOCITY := -0.5
 
 var mouse_look_sensitivity := 0.1
-var joy_look_sensitivity := 20.0
+var joy_look_sensitivity := 2.0
 var velocity := Vector3.ZERO
 var _turn_amount := 0.0  # TODO: This is re-initialized every tick - delete if possible
 var _camera_turned_this_update := false  # TODO: can we eliminate this state?
