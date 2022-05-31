@@ -11,3 +11,4 @@ export_presets.cfg
 data_*/
 
 !export_presets.cfg
+.dir-locals.el
