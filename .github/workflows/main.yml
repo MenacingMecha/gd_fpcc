@@ -14,12 +14,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: godot-tester
-        uses: croconut/godot-tester@v2.5
-        with:
-          version: 3.4.4
-          import-time: 5
-          test-dir: res://test
-          minimum-pass: 1.00
           
+      - name: Run GUT Tests
+        uses: manleydev/run-gut-tests-action@v1.0.1
+        with:
+          directory: "res://test"
