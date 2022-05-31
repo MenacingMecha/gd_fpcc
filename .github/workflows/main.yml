@@ -18,4 +18,4 @@ jobs:
       - name: Run GUT Tests
         uses: manleydev/run-gut-tests-action@v1.0.1
         with:
-          directory: "res://test"
+          directory: "test"
