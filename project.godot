@@ -103,6 +103,11 @@ interact={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Collision"
+3d_physics/layer_2="Interact"
+
 [physics]
 
 common/enable_pause_aware_picking=true
