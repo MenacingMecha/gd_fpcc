@@ -14,9 +14,8 @@ func test_deactivating_disables_collision():
 func test_activating_enables_collision():
 	var interact_box: InteractBox = add_child_autofree(InteractBox.new())
 	interact_box.is_active = false
-	var activated_collision_layer_bit := InteractBox.COLLISION_LAYER_BIT
 	interact_box.is_active = true
-	assert_eq(interact_box.collision_layer, activated_collision_layer_bit)
+	assert_eq(interact_box.collision_layer, interact_box.get_active_collision_layer_bit())
 
 
 func test_is_active_is_respected_on_ready():
