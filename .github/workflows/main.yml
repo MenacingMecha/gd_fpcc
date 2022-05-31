@@ -15,7 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
           
-      - name: Run GUT Tests
-        uses: manleydev/run-gut-tests-action@v1.0.1
+      - name: Godot GUT CI
+        uses: ceceppa/godot-gut-ci@0.1.0
         with:
-          directory: "test"
+          godot_version: 3.4.4
+          unit_test: "res://test"
