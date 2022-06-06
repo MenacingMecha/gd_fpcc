@@ -3,7 +3,7 @@ extends GutTest
 const PlayerController := preload("res://player/player_controller.gd")
 
 const PLAYER_CONTROLLER_SCENE := preload("res://player/player.tscn")
-const TEST_MAP := preload("res://test-map.tscn")
+const TEST_MAP := preload("res://map/test-map.tscn")
 const DEFAULT_MOUSE_POSITION := Vector2.ZERO
 const FLOAT_ERROR_MARGIN := 0.001
 

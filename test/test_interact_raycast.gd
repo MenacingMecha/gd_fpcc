@@ -3,7 +3,7 @@ extends GutTest
 const InteractRaycast := preload("res://player/interact_raycast.gd")
 const InteractBox := preload("res://player/interact_box.gd")
 
-const TEST_INTERACT_BOX_SCENE := preload("res://test/test_interact-box.tscn")
+const TEST_INTERACT_BOX_SCENE := preload("res://map/test_interact-box.tscn")
 const INTERACT_RAYCAST_SCENE := preload("res://player/interact_raycast.tscn")
 
 
