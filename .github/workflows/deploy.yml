@@ -5,15 +5,13 @@ on:
     tags:
       - 'v*'
 
-  workflow_dispatch:
-
 jobs:
   test:
     name: Test
     uses: ./.github/workflows/test.yml  # use the callable tests job to run tests
   
   export-builds:
-    needs: [tests]
+    needs: [test]
     runs-on: ubuntu-latest
     name: Export Builds
     steps:
