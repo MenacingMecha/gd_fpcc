@@ -1,16 +1,19 @@
 # gd_fpcc
-[![CI](https://github.com/MenacingMecha/gd_fpcc/actions/workflows/main.yml/badge.svg)](https://github.com/MenacingMecha/gd_fpcc/actions/workflows/main.yml)
+![Godot Version](https://img.shields.io/badge/godot-v3.4-blue)
+[![License](https://img.shields.io/github/license/MenacingMecha/gd_fpcc)](https://github.com/MenacingMecha/gd_fpcc/blob/main/LICENSE.txt)
+[![Test](https://github.com/MenacingMecha/gd_fpcc/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/MenacingMecha/gd_fpcc/actions/workflows/test.yml)
+
+[Play demo in browser!](https://menacingmecha.itch.io/gd-fpcc-demo)
 
 First person character controller for Godot Engine 3.x
 
+![Header](img/header.png)
+
 ## Features
 
-- Supports simultainous KB+M & gamepad
+- Supports simultaneous KB+M & gamepad
 - Interacting with objects in the environment (all you need for a walking sim right out of the box!)
 - Supports smoothly walking up and down ramps, with no sliding down
+- Camera viewbob
 - Easily extendible
-- [All functionality fully tested](test/)
-
-## Credits
-
-Originally based on code written by [MenacingMecha](https://menacingmecha.github.io/) and [HexagonalJones](https://github.com/HexagonalJones).
+- [Covered by tests](test/)
