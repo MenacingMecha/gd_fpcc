@@ -16,7 +16,7 @@ func test_can_fall_with_gravity():
 
 func test_can_turn_horizontally_with_mouse(params = use_parameters([Vector2.LEFT, Vector2.RIGHT])):
 	var player_controller: PlayerController = add_child_autofree(PLAYER_CONTROLLER_SCENE.instance())
-	player_controller.can_capture_mouse_motion = true
+	player_controller.force_capture_mouse_motion = true
 	var input_sender = InputSender.new(player_controller)
 	input_sender.mouse_set_position(DEFAULT_MOUSE_POSITION)
 	input_sender.mouse_relative_motion(params)
@@ -26,7 +26,7 @@ func test_can_turn_horizontally_with_mouse(params = use_parameters([Vector2.LEFT
 
 func test_can_turn_vertically_with_mouse(params = use_parameters([Vector2.UP, Vector2.DOWN])):
 	var player_controller: PlayerController = add_child_autofree(PLAYER_CONTROLLER_SCENE.instance())
-	player_controller.can_capture_mouse_motion = true
+	player_controller.force_capture_mouse_motion = true
 	var input_sender = InputSender.new(player_controller)
 	input_sender.mouse_set_position(DEFAULT_MOUSE_POSITION)
 	input_sender.mouse_relative_motion(params)
@@ -36,7 +36,7 @@ func test_can_turn_vertically_with_mouse(params = use_parameters([Vector2.UP, Ve
 
 func test_cant_look_vertically_past_max(params = use_parameters([Vector2.UP, Vector2.DOWN])):
 	var player_controller: PlayerController = add_child_autofree(PLAYER_CONTROLLER_SCENE.instance())
-	player_controller.can_capture_mouse_motion = true
+	player_controller.force_capture_mouse_motion = true
 	var input_sender = InputSender.new(player_controller)
 	input_sender.mouse_set_position(DEFAULT_MOUSE_POSITION)
 	input_sender.mouse_relative_motion(params * player_controller.MAX_CAMERA_X_DEGREE * 2)
@@ -219,3 +219,9 @@ func test_player_doesnt_jump_up_unwalkable_slopes():
 		expected_x_position - expected_deviance,
 		expected_x_position + expected_deviance
 	)
+
+
+func test_can_force_mouse_capture():
+	var player_controller: PlayerController = autofree(PlayerController.new())
+	player_controller.force_capture_mouse_motion = true
+	assert_true(player_controller.can_capture_mouse_motion())

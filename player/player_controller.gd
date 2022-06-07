@@ -15,6 +15,7 @@ const MIN_FLOOR_Y_VELOCITY := -0.5
 var mouse_look_sensitivity := 0.1
 var joy_look_sensitivity := 2.0
 var velocity := Vector3.ZERO
+var force_capture_mouse_motion := false
 var _turn_amount := 0.0  # TODO: This is re-initialized every tick - delete if possible
 var _camera_turned_this_update := false  # TODO: can we eliminate this state?
 
@@ -26,7 +27,7 @@ onready var _input_direction := $InputDirection as InputDirection
 
 
 func _unhandled_input(event: InputEvent):
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and event is InputEventMouseMotion:
+	if can_capture_mouse_motion() and event is InputEventMouseMotion:
 		_turn_camera(-(event as InputEventMouseMotion).relative * self.mouse_look_sensitivity)
 
 
@@ -62,6 +63,10 @@ func get_rotation_helper_x_rotation() -> float:
 
 func get_input_direction() -> InputDirection:
 	return self._input_direction
+
+
+func can_capture_mouse_motion() -> bool:
+	return true if self.force_capture_mouse_motion else Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 
 
 # Calculates and applies velocity to physics body based on input, returning the new velocity.
