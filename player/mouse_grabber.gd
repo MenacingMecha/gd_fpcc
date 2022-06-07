@@ -15,12 +15,12 @@ export var _should_grab_on_ready := true
 # Useful for triggering callbacks, such as automatically displaying a pause screen when the player alt-tabs.
 export var _should_stay_released_on_refocus := true
 
-var is_mouse_grabbed := false setget set_mouse_grabbed
-
+var is_mouse_grabbed := false setget set_mouse_grabbed, get_mouse_grabbed
 
 func _ready():
 	# setgets aren't called with onready
-	self.is_mouse_grabbed = _should_grab_on_ready
+	if self._should_grab_on_ready and not OS.get_name() == "HTML5":
+		self.is_mouse_grabbed = true
 
 
 func _notification(what: int):
@@ -29,13 +29,12 @@ func _notification(what: int):
 		self.is_mouse_grabbed = false
 
 
-# TODO: refactor to use _unhandled_input
-func _input(_event: InputEvent):
-	if Input.is_mouse_button_pressed(BUTTON_LEFT) and not is_mouse_grabbed:
+func _unhandled_input(_event: InputEvent):
+	if Input.is_mouse_button_pressed(BUTTON_LEFT) and not self.is_mouse_grabbed:
 		self.is_mouse_grabbed = true
 		get_tree().set_input_as_handled()
 
-	elif Input.is_action_just_pressed(_release_action_name) and is_mouse_grabbed:
+	elif Input.is_action_just_pressed(self._release_action_name) and self.is_mouse_grabbed:
 		self.is_mouse_grabbed = false
 		get_tree().set_input_as_handled()
 
@@ -44,6 +43,10 @@ func set_mouse_grabbed(is_grabbed: bool):
 	is_mouse_grabbed = is_grabbed
 	emit_signal("mouse_grabbed", is_grabbed)
 	_update_mouse_mode(is_grabbed)
+
+
+func get_mouse_grabbed() -> bool:
+	return Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 
 
 # Stub this to avoid side-effects in testing
